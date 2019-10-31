@@ -2,6 +2,7 @@ import React from 'react';
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { geoPath, geoMercator, scaleSequential, interpolateBlues, zoom } from "d3";
 import { useSpring, animated } from 'react-spring';
+import styled from 'styled-components';
 
 interface IMapPresentationProps {
     width: number;
@@ -11,7 +12,15 @@ interface IMapPresentationProps {
     zoomToCountryId?: string | null;
 }
 
+const StyledPath = styled.path`
+  &:hover {
+    stroke: #aaaaaa;
+  }
+`;
 
+const StyledContainer = styled.div`
+  border: solid 1px #ddd;
+`;
 
 export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (props) => {
 
@@ -48,13 +57,13 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
 
 
     return (
-        <div style={{border: 'solid 1px #ddd'}}>
+        <StyledContainer>
             {props.mapData ? (
               <svg width={ props.width } height={ props.height } viewBox={`0 0 ${props.width} ${props.height}`}>
                 <animated.g className="paths" transform={groupAnimation.transform}>
                   {
                     props.mapData.map((d,i) => (
-                        <path
+                        <StyledPath
                           key={ `path-${ i }` }
                           d={ path(d) as string }
                           className="country"
@@ -70,6 +79,6 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
             ) : (
               <></>
             )}
-          </div>
+          </StyledContainer>
       )
 }
