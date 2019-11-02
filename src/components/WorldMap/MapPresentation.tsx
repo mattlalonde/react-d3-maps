@@ -17,7 +17,7 @@ interface IMapPresentationProps {
 
 const StyledPath = styled.path`
   &:hover {
-    stroke: #aaaaaa;
+    stroke: #888888;
   }
 `;
 
@@ -71,7 +71,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                           d={ geoPath(d) as string }
                           className="country"
                           fill={ areaCounts.has(d.id as string) ? colourScale(areaCounts.get(d.id as string) as number) : `rgba(255,255,255,255)` }
-                          stroke={ zoomToCountryId && zoomToCountryId === d.id ? "#000000" : "#DDDDDD"}
+                          stroke={ zoomToCountryId && zoomToCountryId === d.id ? "#000000" : "#BBBBBB"}
                           strokeWidth={ zoomToCountryId && zoomToCountryId === d.id ? strokeWidth * 2 : strokeWidth }
                         />
                       )
@@ -79,8 +79,8 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                   }
                 </animated.g>
                 {areaCounts && areaCounts.size && 
-                  <g transform={`translate(10, ${(height / 2) - 20})`}>
-                    <LegendPresentation colourScale={colourScale} barHeight={height / 2}></LegendPresentation>
+                  <g transform={`translate(10, ${(height - (height / 3)) - 20})`}>
+                    <LegendPresentation colourScale={colourScale} barHeight={height / 3}></LegendPresentation>
                   </g>
                 }
                 

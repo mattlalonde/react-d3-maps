@@ -2,9 +2,11 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { LegendPresentation } from './LegendPresentation';
-import { scaleSequential, interpolateBlues } from 'd3';
+import { scaleSequential } from 'd3';
+import { Colour, interpolationFunc } from './MapColourHelper';
 
-const colourScale = scaleSequential(interpolateBlues).domain([1000, 0]);
+
+const colourScale = scaleSequential(interpolationFunc(Colour.Green)).domain([0, 1000]);
 
 const stories = storiesOf('Legend Presentaton', module);
 
