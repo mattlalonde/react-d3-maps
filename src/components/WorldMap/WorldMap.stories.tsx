@@ -4,5 +4,5 @@ import { action } from '@storybook/addon-actions';
 
 import WorldMap from './WorldMap';
 
-storiesOf('Task', module)
+storiesOf('World Map', module)
   .add('default', () => <WorldMap></WorldMap>);
