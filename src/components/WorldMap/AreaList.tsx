@@ -25,14 +25,46 @@ const defaultValues = {
     fontColour: '#444444'
 };
 
-const SearchButton = styled(animated.button)`
+const Button = styled(animated.button)`
     position: absolute;
-    top: 0px;
     width: 30px;
     height: 30px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    margin:0;
+    padding:0;
+    border-radius: 4px;
+    background-colour: #ffffff;
+    border-color: #dddddd;
+    cursor: pointer;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &:hover {
+        background-color: #f8f8f8;
+        border-color: #aaaaaa;
+    }
 `;
 
-const searchButtonAnimationStyles = {
+const SortButton = styled(Button)`
+    top: 0px;
+`;
+
+const OpenButton = styled(Button)`
+    top: 0px;
+    right: 10px;
+`;
+
+const ResetButton = styled(Button)`
+    top: 0px;
+    right: 45px;
+`;
+
+const sortButtonAnimationStyles = {
     open: {
         right: '80px',
         opacity: 1
@@ -43,36 +75,19 @@ const searchButtonAnimationStyles = {
     }
 };
 
-const SearchInput = styled(animated.input)`
-    position: absolute;
-    top: 0px;
-    width: 168px;
-    height: 24px;
-`;
-
-const searchInputAnimationStyles = {
-    open: {
-        right: '115px',
-        opacity: 1
-    },
-    closed: {
-        right: '-200px',
-        opacity: 0
-    }
-};
-
 const List = styled(animated.div)`
     position: absolute;
     top: 35px;
     width: 278px;
     height: 400px;
     overflow-y: auto;
+    overflow-x: hidden;
     border-top: solid 1px #ddd;
     border-left: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    background-color: rgba(255,255,255,0.7);
+    background-color: rgba(255,255,255,0.8);
     padding: 5px;
     font-size: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontSize };
     color: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontColour };
@@ -157,8 +172,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
     const [orderBy, setOrderBy ] = useState(OrderBy.Count);
 
     const containerProps = useSpring(isOpen ? containerAnimationStyles.open : containerAnimationStyles.closed);
-    const searchButtonProps = useSpring(isOpen ? searchButtonAnimationStyles.open : searchButtonAnimationStyles.closed);
-    const searchInputProps = useSpring(isOpen ? searchInputAnimationStyles.open : searchInputAnimationStyles.closed);
+    const searchButtonProps = useSpring(isOpen ? sortButtonAnimationStyles.open : sortButtonAnimationStyles.closed);
     const listProps = useSpring(isOpen ? listAnimationStyles.open : listAnimationStyles.closed);
     const listItemProps = useSpring(isOpen ? listItemAnimationStyles.open : listItemAnimationStyles.closed);
 
@@ -192,23 +206,16 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
 
     return (
         <Container style={containerProps}>
-            <SearchButton title={`Order by ${orderBy === OrderBy.Count ? 'name' : 'count'}`} style={searchButtonProps} onClick={() => setOrderBy(orderBy === OrderBy.Count ? OrderBy.Name : OrderBy.Count)}>
+            <SortButton title={`Order by ${orderBy === OrderBy.Count ? 'name' : 'count'}`} style={searchButtonProps} onClick={() => setOrderBy(orderBy === OrderBy.Count ? OrderBy.Name : OrderBy.Count)}>
                 <FontAwesomeIcon icon={orderBy == OrderBy.Count ? faSortNumericDownAlt : faSortAlphaDown}></FontAwesomeIcon>
-            </SearchButton>
-            <SearchInput type={'text'} style={searchInputProps}></SearchInput>
-            <button title={`${isOpen ? 'Close' : 'Open'} list`} style={{ position: 'absolute', top: 0, right: 10, width: '30px', height: '30px' }} onClick={() => setIsOpen(!isOpen)}>
+            </SortButton>
+            <OpenButton title={`${isOpen ? 'Close' : 'Open'} list`} onClick={() => setIsOpen(!isOpen)}>
                 <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
-            </button>
-            <button title={'Reset Map'} style={{ position: 'absolute', top: 0, right: 45, width: '30px', height: '30px' }} onClick={() => onSelect(undefined)}>
+            </OpenButton>
+            <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
-            </button>
-            
-            <List style={listProps}>
-                {
-                    
-                    listItems
-                }
-            </List>
+            </ResetButton>
+            <List style={listProps}>{listItems}</List>
         </Container>
     );
 }
