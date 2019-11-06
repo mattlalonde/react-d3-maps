@@ -19,8 +19,8 @@ let areaCounts = new Map<string, number>();
 areaCounts.set('076', 10); // brazil
 areaCounts.set('170', 110); // columbia
 
-const maxCount: number = Math.max(...Array.from(areaCounts.values())); // times 2 so the colour doesn't get too dark
-const minCount: number = 0;//Math.min(...Array.from(areaCounts.values()));
+const maxCount: number = Math.max(...Array.from(areaCounts.values()));
+const minCount: number = 0;
 
 const mapWidth = 800;
 const mapHeight = 500;
