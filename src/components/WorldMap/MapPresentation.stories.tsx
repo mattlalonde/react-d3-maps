@@ -55,6 +55,6 @@ stories.add('zoom into country', () => {
   const defaultValue = null;
   const country = select(label, options, defaultValue);
   
-  return (<MapPresentation mapData={mapPresentationData} areaCounts={areaCounts} width={mapWidth} height={mapHeight} zoomToCountryId={country || ""} colourScale={colourScale} geoPath={path}></MapPresentation>);
+  return (<MapPresentation mapData={mapPresentationData} width={mapWidth} height={mapHeight} zoomToCountryId={country || ""} colourScale={colourScale} geoPath={path}></MapPresentation>);
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { feature } from "topojson-client";
 import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties, Feature } from 'geojson';
@@ -11,13 +11,15 @@ import styled from 'styled-components';
 interface IWorldMapProps {
   worldData: Topology<Objects<GeoJsonProperties>>;
   areaCounts?: Map<string, number>;
-  mapColour: Colour
+  mapColour: Colour;
+  removeAreaIds?: Array<string>;
 }
 
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
   areaCounts: new Map<string, number>(),
-  mapColour: Colour.Blue
+  mapColour: Colour.Blue,
+  removeAreaIds: ['010']
 };
 
 const CountryDisplay = styled.div`
@@ -33,45 +35,54 @@ const CountryDisplay = styled.div`
 
 export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
-  const { worldData, areaCounts, mapColour } = { ...defaultValues,  ...props };
+  const { worldData, areaCounts, mapColour, removeAreaIds } = { ...defaultValues,  ...props };
 
   const [zoomToCountry, setZoomToCountry] = useState(undefined);
 
-  const data = worldData as unknown as Topology<Objects<GeoJsonProperties>>;
-  let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
-  mapFeatures.features = mapFeatures.features.filter((val, idx) => val.id != '010'); // remove antarctica
-  let mapPresentationData = mapFeatures.features;
+  const maxCount = useMemo(() => areaCounts && areaCounts.size > 0 ? Math.max(...Array.from(areaCounts.values())) : 0, [areaCounts]);
+  const presentationData = useMemo(() => {
+    const data = worldData as unknown as Topology<Objects<GeoJsonProperties>>;
+    let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
+    
+    if(removeAreaIds && removeAreaIds.length) {
+      mapFeatures.features = mapFeatures.features.filter(value => {
+        return removeAreaIds.indexOf(value.id as string) === -1;
+      });
+    }
 
-  const maxCount: number = areaCounts && areaCounts.size > 0 ? Math.max(...Array.from(areaCounts.values())) : 0;
-  const minCount: number = 0;
+    return mapFeatures;
+  }, [worldData, removeAreaIds]);
 
   const mapWidth = 800;
   const mapHeight = 500;
 
-  const colourScale = scaleSequential(interpolationFunc(mapColour)).domain([minCount, maxCount]);
-  const projection = geoMercator().scale(100);
-  const path = geoPath().projection(projection.fitSize([mapWidth, mapHeight], mapFeatures));
+  const colourScale = useMemo(() => scaleSequential(interpolationFunc(mapColour)).domain([0, maxCount]), [mapColour, maxCount]);
+  const projection = useMemo(() => geoMercator().scale(100), []);
+  const path = useMemo(() => geoPath().projection(projection.fitSize([mapWidth, mapHeight], presentationData)), [projection, mapWidth, mapHeight, presentationData]);
 
-  const allAreaCounts = new Array<ICountData>();
-
-  mapPresentationData.forEach(feature => {
+  const allAreaCounts = useMemo(() => {
+    return presentationData.features.map(feature => {
       const featureId = feature.id as string;
 
-      allAreaCounts.push({
+      return {
           id: feature.id as string,
           displayName: feature.properties.name,
           count: areaCounts.has(featureId) ? areaCounts.get(featureId) : 0
-      });
+      } as ICountData;
   });
+  }, [presentationData, areaCounts]);
 
-  let zoomedCountry;
-  if(zoomToCountry) {
-    zoomedCountry = allAreaCounts.filter(count => count.id === zoomToCountry)[0];
-  }
+  const zoomedCountry: ICountData | null  = useMemo(() => {
+    if(zoomToCountry) {
+      return allAreaCounts.filter(count => count.id === zoomToCountry)[0];
+    }
+    return null;
+  }, [allAreaCounts, zoomToCountry]);
+  
 
   return (
     <div style={{width: `${mapWidth}px`, height: `${mapHeight}px`, position: 'relative'}}>
-      <MapPresentation mapData={mapPresentationData} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={mapHeight} width={mapWidth} colourScale={colourScale} geoPath={path}></MapPresentation>
+      <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={mapHeight} width={mapWidth} colourScale={colourScale} geoPath={path}></MapPresentation>
       <AreaList allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId)}></AreaList>
       {zoomedCountry && 
         <CountryDisplay>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -176,33 +176,30 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
     const listProps = useSpring(isOpen ? listAnimationStyles.open : listAnimationStyles.closed);
     const listItemProps = useSpring(isOpen ? listItemAnimationStyles.open : listItemAnimationStyles.closed);
 
-    const listItems = [];
-    allAreaCounts.sort((a, b) => {
+    const listItems = useMemo(() => {
+        if(allAreaCounts && allAreaCounts.length > 0) {
+            return allAreaCounts.sort((a, b) => {
 
-        if(orderBy === OrderBy.Count){
-            if(a.count > b.count) { return -1; }
-            if(a.count < b.count) { return 1; }
-
-            if(a.count == b.count) {
-                if(a.displayName < b.displayName) { return -1; }
-                if(a.displayName > b.displayName) { return 1; }
-                return 0;
-            }
-        }
-        else if(orderBy === OrderBy.Name){
-            if(a.displayName < b.displayName) { return -1; }
-            if(a.displayName > b.displayName) { return 1; }
-        }
+                if(orderBy === OrderBy.Count){
+                    if(a.count > b.count) { return -1; }
+                    if(a.count < b.count) { return 1; }
         
-        return 0;
-    }).forEach((value, key) => {
-        listItems.push(
-            <ListItem key={value.id} style={listItemProps} onClick={() => onSelect(value.id)}>
-                <div className="name">{value.displayName}</div>
-                <div className="count">{value.count}</div>
-            </ListItem>
-        );
-    });
+                    if(a.count == b.count) {
+                        if(a.displayName < b.displayName) { return -1; }
+                        if(a.displayName > b.displayName) { return 1; }
+                        return 0;
+                    }
+                }
+                else if(orderBy === OrderBy.Name){
+                    if(a.displayName < b.displayName) { return -1; }
+                    if(a.displayName > b.displayName) { return 1; }
+                }
+                
+                return 0;
+            });
+        }
+        return [];
+    }, [allAreaCounts, orderBy]);
 
     return (
         <Container style={containerProps}>
@@ -215,7 +212,16 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
             <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
             </ResetButton>
-            <List style={listProps}>{listItems}</List>
+            <List style={listProps}>
+                {
+                    listItems.map(value => (
+                        <ListItem key={value.id} style={listItemProps} onClick={() => onSelect(value.id)}>
+                            <div className="name">{value.displayName}</div>
+                            <div className="count">{value.count}</div>
+                        </ListItem>
+                    ))
+                }
+            </List>
         </Container>
     );
 }
