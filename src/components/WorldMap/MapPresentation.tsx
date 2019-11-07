@@ -61,7 +61,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
 
     return (
         <StyledContainer>
-            {mapData ? (
+            {mapData && (
               <svg width={ width } height={ height } viewBox={`0 0 ${width} ${height}`}>
                 <animated.g className="paths" transform={groupAnimation.transform}>
                   {
@@ -85,8 +85,6 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                 }
                 
               </svg>
-            ) : (
-              <></>
             )}
           </StyledContainer>
       )
