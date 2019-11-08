@@ -15,6 +15,7 @@ export interface IAreaPresentation {
     orderBy?: 'count' | 'name',
     fontSize?: string;
     fontColour?: string;
+    parentHeight: number;
     onSelect(countryId?: string):void;
 }
 
@@ -79,14 +80,13 @@ const List = styled(animated.div)`
     position: absolute;
     top: 35px;
     width: 278px;
-    height: 400px;
+    height: ${(props: IAreaPresentation) => props.parentHeight - 51}px;
     overflow-y: auto;
     overflow-x: hidden;
     border-top: solid 1px #ddd;
     border-left: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
+    border-bottom: none;
     border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
     background-color: rgba(255,255,255,0.8);
     padding: 5px;
     font-size: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontSize };
@@ -166,7 +166,7 @@ enum OrderBy {
 
 export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
 
-    const { allAreaCounts, onSelect } = { ...defaultValues, ...props };
+    const { allAreaCounts, onSelect, parentHeight } = { ...defaultValues, ...props };
 
     const [isOpen, setIsOpen] = useState(false);
     const [orderBy, setOrderBy ] = useState(OrderBy.Count);
@@ -184,7 +184,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
                     if(a.count > b.count) { return -1; }
                     if(a.count < b.count) { return 1; }
         
-                    if(a.count == b.count) {
+                    if(a.count === b.count) {
                         if(a.displayName < b.displayName) { return -1; }
                         if(a.displayName > b.displayName) { return 1; }
                         return 0;
@@ -204,7 +204,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
     return (
         <Container style={containerProps}>
             <SortButton title={`Order by ${orderBy === OrderBy.Count ? 'name' : 'count'}`} style={searchButtonProps} onClick={() => setOrderBy(orderBy === OrderBy.Count ? OrderBy.Name : OrderBy.Count)}>
-                <FontAwesomeIcon icon={orderBy == OrderBy.Count ? faSortNumericDownAlt : faSortAlphaDown}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={orderBy === OrderBy.Count ? faSortNumericDownAlt : faSortAlphaDown}></FontAwesomeIcon>
             </SortButton>
             <OpenButton title={`${isOpen ? 'Close' : 'Open'} list`} onClick={() => setIsOpen(!isOpen)}>
                 <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
@@ -212,7 +212,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
             <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
             </ResetButton>
-            <List style={listProps}>
+            <List style={listProps} parentHeight={parentHeight}>
                 {
                     listItems.map(value => (
                         <ListItem key={value.id} style={listItemProps} onClick={() => onSelect(value.id)}>

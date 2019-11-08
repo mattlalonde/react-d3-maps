@@ -3,10 +3,10 @@ import { storiesOf } from '@storybook/react';
 
 import { LegendPresentation } from './LegendPresentation';
 import { scaleSequential } from 'd3';
-import { Colour, interpolationFunc } from './MapColourHelper';
+import { Colour, colourInterpolateFunc } from './MapColourHelper';
 
 
-const colourScale = scaleSequential(interpolationFunc(Colour.Green)).domain([0, 1000]);
+const colourScale = scaleSequential(colourInterpolateFunc(Colour.Green)).domain([0, 1000]);
 
 const stories = storiesOf('Legend Presentaton', module);
 

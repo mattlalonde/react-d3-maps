@@ -4,21 +4,24 @@ import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties, Feature } from 'geojson';
 import { MapPresentation } from './MapPresentation';
 import { AreaList, ICountData } from './AreaList';
-import { interpolationFunc, Colour } from './MapColourHelper';
+import { Colour, colourInterpolateFunc } from './MapColourHelper';
 import { scaleSequential, geoMercator, geoPath } from 'd3';
 import styled from 'styled-components';
 
 interface IWorldMapProps {
+  width: number;
+  height: number;
   worldData: Topology<Objects<GeoJsonProperties>>;
   areaCounts?: Map<string, number>;
-  mapColour: Colour;
+  mapColour?: Colour;
+  mapColourFrom?: string;
+  mapColourTo?: string;
   removeAreaIds?: Array<string>;
 }
 
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
   areaCounts: new Map<string, number>(),
-  mapColour: Colour.Blue,
   removeAreaIds: ['010']
 };
 
@@ -35,9 +38,9 @@ const CountryDisplay = styled.div`
 
 export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
-  const { worldData, areaCounts, mapColour, removeAreaIds } = { ...defaultValues,  ...props };
+  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo } = { ...defaultValues, ...props };
 
-  const [zoomToCountry, setZoomToCountry] = useState(undefined);
+  const [zoomToCountry, setZoomToCountry] = useState('');
 
   const maxCount = useMemo(() => areaCounts && areaCounts.size > 0 ? Math.max(...Array.from(areaCounts.values())) : 0, [areaCounts]);
   const presentationData = useMemo(() => {
@@ -53,12 +56,9 @@ export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
     return mapFeatures;
   }, [worldData, removeAreaIds]);
 
-  const mapWidth = 800;
-  const mapHeight = 500;
-
-  const colourScale = useMemo(() => scaleSequential(interpolationFunc(mapColour)).domain([0, maxCount]), [mapColour, maxCount]);
+  const colourScale = useMemo(() => scaleSequential(colourInterpolateFunc(mapColour, mapColourFrom, mapColourTo)).domain([0, maxCount]), [mapColour, mapColourFrom, mapColourTo, maxCount]);
   const projection = useMemo(() => geoMercator().scale(100), []);
-  const path = useMemo(() => geoPath().projection(projection.fitSize([mapWidth, mapHeight], presentationData)), [projection, mapWidth, mapHeight, presentationData]);
+  const path = useMemo(() => geoPath().projection(projection.fitSize([width, height], presentationData)), [projection, width, height, presentationData]);
 
   const allAreaCounts = useMemo(() => {
     return presentationData.features.map(feature => {
@@ -66,7 +66,7 @@ export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
       return {
           id: feature.id as string,
-          displayName: feature.properties.name,
+          displayName: feature && feature.properties ? feature.properties.name : '',
           count: areaCounts.has(featureId) ? areaCounts.get(featureId) : 0
       } as ICountData;
   });
@@ -81,9 +81,9 @@ export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
   
 
   return (
-    <div style={{width: `${mapWidth}px`, height: `${mapHeight}px`, position: 'relative'}}>
-      <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={mapHeight} width={mapWidth} colourScale={colourScale} geoPath={path}></MapPresentation>
-      <AreaList allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId)}></AreaList>
+    <div style={{width: `${width}px`, height: `${height}px`, position: 'relative'}}>
+      <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
+      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId)}></AreaList>
       {zoomedCountry && 
         <CountryDisplay>
             <span className="country">{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>

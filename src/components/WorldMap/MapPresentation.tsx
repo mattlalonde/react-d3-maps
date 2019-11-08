@@ -58,6 +58,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
     }
 
     const groupAnimation = useSpring({ transform: `translate(${translateX}, ${translateY}) scale(${scale})` });
+    
 
     return (
         <StyledContainer>
