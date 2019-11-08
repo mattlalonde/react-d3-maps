@@ -25,8 +25,8 @@ mapPresentationData.forEach(feature => {
 
     allAreaCounts.push({
         id: feature.id as string,
-        displayName: feature.properties.name,
-        count: areaCounts.has(featureId) ? areaCounts.get(featureId) : 0
+        displayName: feature && feature.properties ? feature.properties.name : '',
+        count: areaCounts.has(featureId) ? areaCounts.get(featureId) || 0 : 0
     });
 });
 

@@ -88,7 +88,7 @@ export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
   return (
     <animated.div style={mapAnimationProps}>
       <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
-      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId)}></AreaList>
+      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId || '')}></AreaList>
       {zoomedCountry && 
         <CountryDisplay>
             <span style={{fontFamily: fontFamily}}>{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>

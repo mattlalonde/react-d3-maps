@@ -31,7 +31,7 @@ export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = 
                 <linearGradient id="linear-gradient" x1={"0%"} y1={"100%"} x2={"0%"} y2={"0%"}> 
                     {
                         axisScale.ticks().map((value, index, array) => (
-                            <stop offset={`${100*index/array.length}%`} stopColor={colourScale(value)}></stop>
+                            <stop key={index} offset={`${100*index/array.length}%`} stopColor={colourScale(value)}></stop>
                         ))
                     }
                 </linearGradient>
@@ -41,8 +41,8 @@ export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = 
             </g>
             <g transform={`translate(${margin.left + barWidth},${margin.top})`} fill={"none"} fontSize={fontSize} textAnchor={"start"}>
                 {
-                    axisScale.ticks(5).map((value, index, array) => (
-                        <g opacity={0.8} transform={`translate(0,${axisScale(value)})`}>
+                    axisScale.ticks(5).map((value, index) => (
+                        <g key={index} opacity={0.8} transform={`translate(0,${axisScale(value)})`}>
                             <text fill={"#AAAAAA"} x={tickPadding} fontFamily={fontFamily}>{value}</text>
                         </g>
                     ))

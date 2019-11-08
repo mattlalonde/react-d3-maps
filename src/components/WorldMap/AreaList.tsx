@@ -17,7 +17,7 @@ export interface IAreaPresentation {
     fontColour?: string;
     fontFamily?:string;
     parentHeight: number;
-    onSelect(countryId?: string):void;
+    onSelect?:(countryId?: string) => void;
 }
 
 const defaultValues = {
@@ -25,7 +25,8 @@ const defaultValues = {
     orderBy: 'name',
     fontSize: '12px',
     fontFamily:'Arial',
-    fontColour: '#444444'
+    fontColour: '#444444',
+    onSelect: (countryId?: string) => {}
 };
 
 const Button = styled(animated.button)`
@@ -81,8 +82,7 @@ const sortButtonAnimationStyles = {
 const List = styled(animated.div)`
     position: absolute;
     top: 35px;
-    width: 278px;
-    height: ${(props: IAreaPresentation) => props.parentHeight - 51}px;
+    width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     border-top: solid 1px #ddd;
@@ -91,9 +91,6 @@ const List = styled(animated.div)`
     border-top-left-radius: 8px;
     background-color: rgba(255,255,255,0.8);
     padding: 5px;
-    font-size: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontSize };
-    font-family: ${(props: IAreaPresentation) => props.fontFamily || defaultValues.fontFamily };
-    color: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontColour };
 `;
 
 const listAnimationStyles = {
@@ -169,7 +166,7 @@ enum OrderBy {
 
 export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
 
-    const { allAreaCounts, onSelect, parentHeight } = { ...defaultValues, ...props };
+    const { allAreaCounts, onSelect, parentHeight, fontColour, fontFamily, fontSize } = { ...defaultValues, ...props };
 
     const [isOpen, setIsOpen] = useState(false);
     const [orderBy, setOrderBy ] = useState(OrderBy.Count);
@@ -215,10 +212,10 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
             <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
             </ResetButton>
-            <List style={listProps} parentHeight={parentHeight}>
+            <List style={{...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: fontSize}, ...listProps}}>
                 {
-                    listItems.map(value => (
-                        <ListItem key={value.id} style={listItemProps} onClick={() => onSelect(value.id)}>
+                    listItems.map((value, index) => (
+                        <ListItem key={index} style={listItemProps} onClick={() => onSelect(value.id)}>
                             <div className="name">{value.displayName}</div>
                             <div className="count">{value.count}</div>
                         </ListItem>

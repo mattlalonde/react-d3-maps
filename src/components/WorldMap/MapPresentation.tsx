@@ -59,10 +59,15 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
 
     const svgAnimation = useSpring({ width: width, height: height, viewBox: `0 0 ${width} ${height}`, transform: `translate(${translateX}, ${translateY}) scale(${scale})`});
 
+    /*
+      NOTE: There is a bug in react-spring https://github.com/react-spring/react-spring/issues/641
+
+      This means we can't animate the viewbox until v9.0 of react-spring but the effect is still usable
+    */
     return (
         <StyledContainer>
             {mapData && (
-              <animated.svg width={ svgAnimation.width } height={ svgAnimation.height } viewBox={svgAnimation.viewBox}>
+              <animated.svg width={ svgAnimation.width } height={ svgAnimation.height } viewBox={`0 0 ${width} ${height}`}>
                 <animated.g className="paths" transform={svgAnimation.transform}>
                   {
                     mapData.map((d,i) => (
@@ -70,7 +75,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                           key={ `path-${ i }` }
                           d={ geoPath(d) as string }
                           className="country"
-                          fill={ areaCounts.has(d.id as string) ? colourScale(areaCounts.get(d.id as string) as number) : `rgba(255,255,255,255)` }
+                          fill={ areaCounts.has(d.id as string) ? colourScale(areaCounts.get(d.id as string) as number) : colourScale(0) }
                           stroke={ zoomToCountryId && zoomToCountryId === d.id ? "#000000" : "#BBBBBB"}
                           strokeWidth={ zoomToCountryId && zoomToCountryId === d.id ? strokeWidth * 2 : strokeWidth }
                         />
