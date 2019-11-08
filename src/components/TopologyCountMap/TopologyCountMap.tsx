@@ -19,13 +19,19 @@ interface IWorldMapProps {
   mapColourTo?: string;
   removeAreaIds?: Array<string>;
   fontFamily?: string;
+  fontColour?: string;
+  listFontSize?: number;
+  headerFontSize?: number;
 }
 
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
   areaCounts: new Map<string, number>(),
   removeAreaIds: ['010'],
-  fontFamily: 'Arial'
+  fontFamily: 'Arial',
+  fontColour: '#444444',
+  listFontSize: 12,
+  headerFontSize: 16
 };
 
 const CountryDisplay = styled.div`
@@ -41,7 +47,7 @@ const CountryDisplay = styled.div`
 
 export const TopologyCountMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
-  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily } = { ...defaultValues, ...props };
+  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
 
   const [zoomToCountry, setZoomToCountry] = useState('');
 
@@ -88,10 +94,10 @@ export const TopologyCountMap: React.FunctionComponent<IWorldMapProps> = (props)
   return (
     <animated.div style={mapAnimationProps}>
       <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
-      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId || '')}></AreaList>
+      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} fontColour={fontColour} fontSize={listFontSize} onSelect={(countryId) => setZoomToCountry(countryId || '')}></AreaList>
       {zoomedCountry && 
-        <CountryDisplay>
-            <span style={{fontFamily: fontFamily}}>{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>
+        <CountryDisplay style={{fontSize: headerFontSize}}>
+            <span style={{fontFamily: fontFamily, color: fontColour}}>{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>
         </CountryDisplay>
       }
     </animated.div>

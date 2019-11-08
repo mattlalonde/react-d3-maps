@@ -7,19 +7,21 @@ interface ILegendPresentation {
     colourScale: ScaleSequential<string>;
     fontSize?: number;
     fontFamily?: string;
+    fontColour?: string;
 }
 
 const defaultValues = {
     barWidth: 10,
     barHeight: 300,
     fontSize: 10,
-    fontFamily: "sans-serif"
+    fontFamily: "sans-serif",
+    fontColour: '#444444'
 }
 
 // reference: https://github.com/d3/d3-axis/blob/master/src/axis.js
 export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = (props: ILegendPresentation) => {
 
-    const {barWidth, barHeight, colourScale, fontSize, fontFamily } = { ...defaultValues, ...props };
+    const {barWidth, barHeight, colourScale, fontSize, fontFamily, fontColour } = { ...defaultValues, ...props };
 
     const margin = {top: 10, right: 40, bottom: 10, left: 10};
     const tickPadding = 3;
@@ -43,7 +45,7 @@ export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = 
                 {
                     axisScale.ticks(5).map((value, index) => (
                         <g key={index} opacity={0.8} transform={`translate(0,${axisScale(value)})`}>
-                            <text fill={"#AAAAAA"} x={tickPadding} fontFamily={fontFamily}>{value}</text>
+                            <text fill={fontColour} x={tickPadding} fontFamily={fontFamily}>{value}</text>
                         </g>
                     ))
                 }

@@ -13,7 +13,7 @@ export interface ICountData {
 export interface IAreaPresentation {
     allAreaCounts?: Array<ICountData>;
     orderBy?: 'count' | 'name',
-    fontSize?: string;
+    fontSize?: number;
     fontColour?: string;
     fontFamily?:string;
     parentHeight: number;
@@ -23,7 +23,7 @@ export interface IAreaPresentation {
 const defaultValues = {
     open: false,
     orderBy: 'name',
-    fontSize: '12px',
+    fontSize: 12,
     fontFamily:'Arial',
     fontColour: '#444444',
     onSelect: (countryId?: string) => {}
@@ -82,7 +82,7 @@ const sortButtonAnimationStyles = {
 const List = styled(animated.div)`
     position: absolute;
     top: 35px;
-    width: 200px;
+    width: 230px;
     overflow-y: auto;
     overflow-x: hidden;
     border-top: solid 1px #ddd;
@@ -212,7 +212,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
             <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
             </ResetButton>
-            <List style={{...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: fontSize}, ...listProps}}>
+            <List style={{...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: `${fontSize}px`}, ...listProps}}>
                 {
                     listItems.map((value, index) => (
                         <ListItem key={index} style={listItemProps} onClick={() => onSelect(value.id)}>
