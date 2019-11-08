@@ -39,7 +39,7 @@ const CountryDisplay = styled.div`
   border: solid 1px #ddd;
 `;
 
-export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
+export const TopologyCountMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
   const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily } = { ...defaultValues, ...props };
 

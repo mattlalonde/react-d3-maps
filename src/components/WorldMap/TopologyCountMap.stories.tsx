@@ -4,7 +4,7 @@ import { withKnobs, select, number, text } from '@storybook/addon-knobs';
 
 import mapData from '../../data/countries-110m.json';
 
-import { WorldMap } from './WorldMap';
+import { TopologyCountMap } from './TopologyCountMap';
 import { Topology, Objects } from 'topojson-specification';
 import { GeoJsonProperties, FeatureCollection, Geometry } from 'geojson';
 import { feature } from 'topojson-client';
@@ -26,7 +26,7 @@ mapPresentationData.forEach((feature, idx) => {
 const stories = storiesOf('World Map', module);
 stories.addDecorator(withKnobs);
 
-  stories.add('default', () => <WorldMap width={800} height={500} worldData={data} areaCounts={areaCounts}></WorldMap>);
+  stories.add('default', () => <TopologyCountMap width={800} height={500} worldData={data} areaCounts={areaCounts}></TopologyCountMap>);
 
   stories.add('colours', () => {
     const label = 'Map Colours';
@@ -43,12 +43,12 @@ stories.addDecorator(withKnobs);
     const mapColourFrom = text('Map Colour From', '');
     const mapColourTo = text('Map Colour To', '');
   
-    return (<WorldMap width={800} height={500} worldData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></WorldMap>);
+    return (<TopologyCountMap width={800} height={500} worldData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></TopologyCountMap>);
   });
 
   stories.add('dimensions', () => {
     const width = number('Width', 800);
     const height = number('Height', 500);
 
-    return (<WorldMap width={width} height={height} worldData={data} areaCounts={areaCounts}></WorldMap>);
+    return (<TopologyCountMap width={width} height={height} worldData={data} areaCounts={areaCounts}></TopologyCountMap>);
   });
