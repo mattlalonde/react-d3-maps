@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select, number } from '@storybook/addon-knobs';
+import { withKnobs, select, number, text } from '@storybook/addon-knobs';
 
 import mapData from '../../data/countries-110m.json';
 
@@ -39,13 +39,16 @@ stories.addDecorator(withKnobs);
 
     const defaultValue = undefined;
     const colour = select(label, options, defaultValue);
+
+    const mapColourFrom = text('Map Colour From', '');
+    const mapColourTo = text('Map Colour To', '');
   
-    return (<WorldMap width={800} height={500} worldData={data} areaCounts={areaCounts} mapColour={colour}></WorldMap>);
+    return (<WorldMap width={800} height={500} worldData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></WorldMap>);
   });
 
   stories.add('dimensions', () => {
     const width = number('Width', 800);
-    const height = number('Height', 450);
+    const height = number('Height', 500);
 
     return (<WorldMap width={width} height={height} worldData={data} areaCounts={areaCounts}></WorldMap>);
   });

@@ -57,14 +57,13 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
       }
     }
 
-    const groupAnimation = useSpring({ transform: `translate(${translateX}, ${translateY}) scale(${scale})` });
-    
+    const svgAnimation = useSpring({ width: width, height: height, viewBox: `0 0 ${width} ${height}`, transform: `translate(${translateX}, ${translateY}) scale(${scale})`});
 
     return (
         <StyledContainer>
             {mapData && (
-              <svg width={ width } height={ height } viewBox={`0 0 ${width} ${height}`}>
-                <animated.g className="paths" transform={groupAnimation.transform}>
+              <animated.svg width={ svgAnimation.width } height={ svgAnimation.height } viewBox={svgAnimation.viewBox}>
+                <animated.g className="paths" transform={svgAnimation.transform}>
                   {
                     mapData.map((d,i) => (
                         <StyledPath
@@ -85,7 +84,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                   </g>
                 }
                 
-              </svg>
+              </animated.svg>
             )}
           </StyledContainer>
       )

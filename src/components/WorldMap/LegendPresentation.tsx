@@ -41,7 +41,7 @@ export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = 
             </g>
             <g transform={`translate(${margin.left + barWidth},${margin.top})`} fill={"none"} fontSize={fontSize} textAnchor={"start"}>
                 {
-                    axisScale.ticks().map((value, index, array) => (
+                    axisScale.ticks(5).map((value, index, array) => (
                         <g opacity={0.8} transform={`translate(0,${axisScale(value)})`}>
                             <text fill={"#AAAAAA"} x={tickPadding} fontFamily={fontFamily}>{value}</text>
                         </g>

@@ -7,6 +7,7 @@ import { AreaList, ICountData } from './AreaList';
 import { Colour, colourInterpolateFunc } from './MapColourHelper';
 import { scaleSequential, geoMercator, geoPath } from 'd3';
 import styled from 'styled-components';
+import { useSpring, animated } from 'react-spring';
 
 interface IWorldMapProps {
   width: number;
@@ -17,12 +18,14 @@ interface IWorldMapProps {
   mapColourFrom?: string;
   mapColourTo?: string;
   removeAreaIds?: Array<string>;
+  fontFamily?: string;
 }
 
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
   areaCounts: new Map<string, number>(),
-  removeAreaIds: ['010']
+  removeAreaIds: ['010'],
+  fontFamily: 'Arial'
 };
 
 const CountryDisplay = styled.div`
@@ -38,7 +41,7 @@ const CountryDisplay = styled.div`
 
 export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
 
-  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo } = { ...defaultValues, ...props };
+  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily } = { ...defaultValues, ...props };
 
   const [zoomToCountry, setZoomToCountry] = useState('');
 
@@ -78,17 +81,19 @@ export const WorldMap: React.FunctionComponent<IWorldMapProps> = (props) => {
     }
     return null;
   }, [allAreaCounts, zoomToCountry]);
+
+  const mapAnimationProps = useSpring({width: width, height: height, position: 'relative'});
   
 
   return (
-    <div style={{width: `${width}px`, height: `${height}px`, position: 'relative'}}>
+    <animated.div style={mapAnimationProps}>
       <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
       <AreaList parentHeight={height} allAreaCounts={allAreaCounts} onSelect={(countryId) => setZoomToCountry(countryId)}></AreaList>
       {zoomedCountry && 
         <CountryDisplay>
-            <span className="country">{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>
+            <span style={{fontFamily: fontFamily}}>{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>
         </CountryDisplay>
       }
-    </div>
+    </animated.div>
   );
 }

@@ -36,7 +36,7 @@ stories.addDecorator(withKnobs);
 stories.add("default", () => {
     return (
         <div style={{ width: "500px", height: "500px", border: "solid 1px #ddd", position: "relative"}}>
-            <AreaList allAreaCounts={allAreaCounts}></AreaList>
+            <AreaList allAreaCounts={allAreaCounts} parentHeight={498}></AreaList>
         </div>
     );
    

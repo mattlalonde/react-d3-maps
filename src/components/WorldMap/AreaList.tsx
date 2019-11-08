@@ -15,6 +15,7 @@ export interface IAreaPresentation {
     orderBy?: 'count' | 'name',
     fontSize?: string;
     fontColour?: string;
+    fontFamily?:string;
     parentHeight: number;
     onSelect(countryId?: string):void;
 }
@@ -23,6 +24,7 @@ const defaultValues = {
     open: false,
     orderBy: 'name',
     fontSize: '12px',
+    fontFamily:'Arial',
     fontColour: '#444444'
 };
 
@@ -90,6 +92,7 @@ const List = styled(animated.div)`
     background-color: rgba(255,255,255,0.8);
     padding: 5px;
     font-size: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontSize };
+    font-family: ${(props: IAreaPresentation) => props.fontFamily || defaultValues.fontFamily };
     color: ${(props: IAreaPresentation) => props.fontColour || defaultValues.fontColour };
 `;
 
