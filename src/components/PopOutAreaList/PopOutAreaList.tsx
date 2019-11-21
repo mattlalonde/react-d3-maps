@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { useSpring, animated } from 'react-spring';
-import styled from 'styled-components';
+import { useSpring } from 'react-spring';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortNumericDownAlt, faSortAlphaDown, faRedo, faBars } from '@fortawesome/free-solid-svg-icons';
+import {SortButton, OpenButton, ResetButton, Container, List, ListItem } from './PopOutAreaListStyles';
 
 export interface ICountData {
     id: string;
@@ -10,7 +10,7 @@ export interface ICountData {
     count: number;
 }
 
-export interface IAreaPresentation {
+export interface IPopOutAreaListProps {
     allAreaCounts?: Array<ICountData>;
     orderBy?: 'count' | 'name',
     fontSize?: number;
@@ -29,133 +29,24 @@ const defaultValues = {
     onSelect: (countryId?: string) => {}
 };
 
-const Button = styled(animated.button)`
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    margin:0;
-    padding:0;
-    border-radius: 4px;
-    background-colour: #ffffff;
-    border-color: #dddddd;
-    cursor: pointer;
-
-    &:focus {
-        outline: 0;
-    }
-
-    &:hover {
-        background-color: #f8f8f8;
-        border-color: #aaaaaa;
-    }
-`;
-
-const SortButton = styled(Button)`
-    top: 0px;
-`;
-
-const OpenButton = styled(Button)`
-    top: 0px;
-    right: 10px;
-`;
-
-const ResetButton = styled(Button)`
-    top: 0px;
-    right: 45px;
-`;
-
 const sortButtonAnimationStyles = {
-    open: {
-        right: '80px',
-        opacity: 1
-    },
-    closed: {
-        right: '-30px',
-        opacity: 0
-    }
+    open: { right: '80px', opacity: 1 },
+    closed: { right: '-30px', opacity: 0 }
 };
-
-const List = styled(animated.div)`
-    position: absolute;
-    top: 35px;
-    width: 230px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-top: solid 1px #ddd;
-    border-left: solid 1px #ddd;
-    border-bottom: none;
-    border-top-left-radius: 8px;
-    background-color: rgba(255,255,255,0.8);
-    padding: 5px;
-`;
 
 const listAnimationStyles = {
-    open: {
-        right: '1px',
-        opacity: 1
-    },
-    closed: {
-        right: '-280px',
-        opacity: 0
-    }
+    open: { right: '1px', opacity: 1 },
+    closed: { right: '-280px', opacity: 0 }
 };
-
-const ListItem = styled(animated.div)`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    position: relative;
-    padding: 5px 0;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #eeeeee;
-    }
-
-    .name {
-        flex-grow: 1;
-        padding: 0 5px;
-    }
-
-    .count {
-        width: 30px;
-        align-self: flex-end;
-        text-align: right;
-        margin-right: 5px;
-    }
-`;
 
 const listItemAnimationStyles = {
-    open: {
-        right: '0px',
-        opacity: 1
-    },
-    closed: {
-        right: '-250px',
-        opacity: 0
-    }
+    open: { right: '0px', opacity: 1 },
+    closed: { right: '-250px', opacity: 0 }
 };
 
-const Container = styled(animated.div)`
-    position: absolute;
-    top: 10px;
-    right:0;
-    overflow: hidden;
-`;
-
 const containerAnimationStyles = {
-    open: {
-        width: '290px',
-        height: '500px'
-    },
-    closed: {
-        width: '75px',
-        height: '30px'
-    }
+    open: { width: '290px', height: '500px' },
+    closed: { width: '75px', height: '30px' }
 }
 
 enum OrderBy {
@@ -164,7 +55,7 @@ enum OrderBy {
 }
 
 
-export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
+export const PopOutAreaList: React.FunctionComponent<IPopOutAreaListProps> = (props) => {
 
     const { allAreaCounts, onSelect, parentHeight, fontColour, fontFamily, fontSize } = { ...defaultValues, ...props };
 
@@ -212,7 +103,7 @@ export const AreaList: React.FunctionComponent<IAreaPresentation> = (props) => {
             <ResetButton title={'Reset Map'} onClick={() => onSelect(undefined)}>
                 <FontAwesomeIcon icon={faRedo}></FontAwesomeIcon>
             </ResetButton>
-            <List style={{...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: `${fontSize}px`}, ...listProps}}>
+            <List style={{ ...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: `${fontSize}px`}, ...listProps }}>
                 {
                     listItems.map((value, index) => (
                         <ListItem key={index} style={listItemProps} onClick={() => onSelect(value.id)}>

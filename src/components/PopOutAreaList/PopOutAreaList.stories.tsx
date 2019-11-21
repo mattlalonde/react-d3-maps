@@ -7,7 +7,7 @@ import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { feature } from 'topojson-client';
 
-import { AreaList, ICountData } from './AreaList';
+import { PopOutAreaList, ICountData } from './PopOutAreaList';
 
 let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
 let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
@@ -36,7 +36,7 @@ stories.addDecorator(withKnobs);
 stories.add("default", () => {
     return (
         <div style={{ width: "500px", height: "500px", border: "solid 1px #ddd", position: "relative"}}>
-            <AreaList allAreaCounts={allAreaCounts} parentHeight={498}></AreaList>
+            <PopOutAreaList allAreaCounts={allAreaCounts} parentHeight={498}></PopOutAreaList>
         </div>
     );
    

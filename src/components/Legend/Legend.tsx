@@ -1,7 +1,7 @@
 import React from 'react';
 import { scaleLinear, ScaleSequential } from 'd3';
 
-interface ILegendPresentation {
+interface ILegendProps {
     barWidth?: number;
     barHeight?: number;
     colourScale: ScaleSequential<string>;
@@ -19,7 +19,7 @@ const defaultValues = {
 }
 
 // reference: https://github.com/d3/d3-axis/blob/master/src/axis.js
-export const LegendPresentation: React.FunctionComponent<ILegendPresentation> = (props: ILegendPresentation) => {
+export const Legend: React.FunctionComponent<ILegendProps> = (props: ILegendProps) => {
 
     const {barWidth, barHeight, colourScale, fontSize, fontFamily, fontColour } = { ...defaultValues, ...props };
 

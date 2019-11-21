@@ -8,7 +8,7 @@ import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { feature } from 'topojson-client';
 import { scaleSequential, geoMercator, geoPath } from 'd3';
-import { Colour, colourInterpolateFunc } from './MapColourHelper';
+import { Colour, colourInterpolateFunc } from '../../utils/MapColourHelper';
 
 let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
 let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;

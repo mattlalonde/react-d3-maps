@@ -2,8 +2,8 @@ import React from 'react';
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { ScaleSequential, GeoPath } from "d3";
 import { useSpring, animated } from 'react-spring';
-import styled from 'styled-components';
-import { LegendPresentation } from './LegendPresentation';
+import { Legend } from '../Legend/Legend';
+import {StyledContainer, StyledPath } from './MapPresentationStyles';
 
 interface IMapPresentationProps {
     width: number;
@@ -14,16 +14,6 @@ interface IMapPresentationProps {
     colourScale: ScaleSequential<string>;
     geoPath: GeoPath;
 }
-
-const StyledPath = styled.path`
-  &:hover {
-    stroke: #888888;
-  }
-`;
-
-const StyledContainer = styled.div`
-  border: solid 1px #ddd;
-`;
 
 const defaultValues = {
     mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
@@ -85,7 +75,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                 </animated.g>
                 {areaCounts && areaCounts.size && 
                   <g transform={`translate(10, ${(height - (height / 3)) - 20})`}>
-                    <LegendPresentation colourScale={colourScale} barHeight={height / 3}></LegendPresentation>
+                    <Legend colourScale={colourScale} barHeight={height / 3}></Legend>
                   </g>
                 }
                 

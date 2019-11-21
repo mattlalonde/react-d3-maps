@@ -8,7 +8,7 @@ import { TopologyCountMap } from './TopologyCountMap';
 import { Topology, Objects } from 'topojson-specification';
 import { GeoJsonProperties, FeatureCollection, Geometry } from 'geojson';
 import { feature } from 'topojson-client';
-import { Colour } from './MapColourHelper';
+import { Colour } from '../../utils/MapColourHelper';
 
 let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
 

@@ -2,14 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { feature } from "topojson-client";
 import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties, Feature } from 'geojson';
-import { MapPresentation } from './MapPresentation';
-import { AreaList, ICountData } from './AreaList';
-import { Colour, colourInterpolateFunc } from './MapColourHelper';
+import { MapPresentation } from '../MapPresentation/MapPresentation';
+import { PopOutAreaList, ICountData } from '../PopOutAreaList/PopOutAreaList';
+import { Colour, colourInterpolateFunc } from '../../utils/MapColourHelper';
 import { scaleSequential, geoMercator, geoPath } from 'd3';
-import styled from 'styled-components';
 import { useSpring, animated } from 'react-spring';
+import { CountryDisplay } from './TopologyCountMapStyles';
 
-interface IWorldMapProps {
+interface ITopologyCountMapProps {
   width: number;
   height: number;
   worldData: Topology<Objects<GeoJsonProperties>>;
@@ -34,18 +34,7 @@ const defaultValues = {
   headerFontSize: 16
 };
 
-const CountryDisplay = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(255,255,255,0.8);
-  max-width: 400px;
-  padding: 10px;
-  border-radius: 4px;
-  border: solid 1px #ddd;
-`;
-
-export const TopologyCountMap: React.FunctionComponent<IWorldMapProps> = (props) => {
+export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> = (props) => {
 
   const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
 
@@ -94,7 +83,7 @@ export const TopologyCountMap: React.FunctionComponent<IWorldMapProps> = (props)
   return (
     <animated.div style={mapAnimationProps}>
       <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
-      <AreaList parentHeight={height} allAreaCounts={allAreaCounts} fontColour={fontColour} fontSize={listFontSize} onSelect={(countryId) => setZoomToCountry(countryId || '')}></AreaList>
+      <PopOutAreaList parentHeight={height} allAreaCounts={allAreaCounts} fontColour={fontColour} fontSize={listFontSize} onSelect={(countryId) => setZoomToCountry(countryId || '')}></PopOutAreaList>
       {zoomedCountry && 
         <CountryDisplay style={{fontSize: headerFontSize}}>
             <span style={{fontFamily: fontFamily, color: fontColour}}>{`${zoomedCountry.displayName}: ${zoomedCountry.count}`}</span>
