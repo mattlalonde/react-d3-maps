@@ -1,11 +1,5 @@
 import { interpolateRgb } from 'd3-interpolate';
-
-export enum Colour {
-    Red = 1,
-    Blue = 2,
-    Green = 3,
-    Grey = 4
-}
+import { Colour } from './Colours';
 
 export const colourInterpolateFunc = (colour?: Colour, from?: string, to?: string) => {
     if(colour) {

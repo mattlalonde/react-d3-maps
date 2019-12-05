@@ -4,7 +4,8 @@ import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties, Feature } from 'geojson';
 import { MapPresentation } from '../MapPresentation/MapPresentation';
 import { PopOutAreaList, ICountData } from '../PopOutAreaList/PopOutAreaList';
-import { Colour, colourInterpolateFunc } from '../../utils/MapColourHelper';
+import { colourInterpolateFunc } from '../../utils/MapColourHelper';
+import { Colour } from '../../utils/Colours';
 import { scaleSequential, geoMercator, geoPath } from 'd3';
 import { useSpring, animated } from 'react-spring';
 import { CountryDisplay } from './TopologyCountMapStyles';
@@ -12,7 +13,7 @@ import { CountryDisplay } from './TopologyCountMapStyles';
 interface ITopologyCountMapProps {
   width: number;
   height: number;
-  worldData: Topology<Objects<GeoJsonProperties>>;
+  mapData: Topology<Objects<GeoJsonProperties>>;
   areaCounts?: Map<string, number>;
   mapColour?: Colour;
   mapColourFrom?: string;
@@ -36,13 +37,13 @@ const defaultValues = {
 
 export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> = (props) => {
 
-  const { width, height, worldData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
+  const { width, height, mapData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
 
   const [zoomToCountry, setZoomToCountry] = useState('');
 
   const maxCount = useMemo(() => areaCounts && areaCounts.size > 0 ? Math.max(...Array.from(areaCounts.values())) : 0, [areaCounts]);
   const presentationData = useMemo(() => {
-    const data = worldData as unknown as Topology<Objects<GeoJsonProperties>>;
+    const data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
     let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
     
     if(removeAreaIds && removeAreaIds.length) {
@@ -52,7 +53,7 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
     }
 
     return mapFeatures;
-  }, [worldData, removeAreaIds]);
+  }, [mapData, removeAreaIds]);
 
   const colourScale = useMemo(() => scaleSequential(colourInterpolateFunc(mapColour, mapColourFrom, mapColourTo)).domain([0, maxCount]), [mapColour, mapColourFrom, mapColourTo, maxCount]);
   const projection = useMemo(() => geoMercator().scale(100), []);

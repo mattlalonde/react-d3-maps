@@ -8,7 +8,7 @@ import { TopologyCountMap } from './TopologyCountMap';
 import { Topology, Objects } from 'topojson-specification';
 import { GeoJsonProperties, FeatureCollection, Geometry } from 'geojson';
 import { feature } from 'topojson-client';
-import { Colour } from '../../utils/MapColourHelper';
+import { Colour } from '../../utils/Colours';
 
 let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
 
@@ -26,7 +26,7 @@ mapPresentationData.forEach((feature, idx) => {
 const stories = storiesOf('World Map', module);
 stories.addDecorator(withKnobs);
 
-  stories.add('default', () => <TopologyCountMap width={800} height={500} worldData={data} areaCounts={areaCounts}></TopologyCountMap>);
+  stories.add('default', () => <TopologyCountMap width={800} height={500} mapData={data} areaCounts={areaCounts}></TopologyCountMap>);
 
   stories.add('colours', () => {
     const label = 'Map Colours';
@@ -43,12 +43,12 @@ stories.addDecorator(withKnobs);
     const mapColourFrom = text('Map Colour From', '');
     const mapColourTo = text('Map Colour To', '');
   
-    return (<TopologyCountMap width={800} height={500} worldData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></TopologyCountMap>);
+    return (<TopologyCountMap width={800} height={500} mapData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></TopologyCountMap>);
   });
 
   stories.add('dimensions', () => {
     const width = number('Width', 800);
     const height = number('Height', 500);
 
-    return (<TopologyCountMap width={width} height={height} worldData={data} areaCounts={areaCounts}></TopologyCountMap>);
+    return (<TopologyCountMap width={width} height={height} mapData={data} areaCounts={areaCounts}></TopologyCountMap>);
   });
