@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select, number, text } from '@storybook/addon-knobs';
 
-import mapData from '../../data/countries-110m.json';
+import worldMapData from '../../data/countries-110m.json';
 
 import { TopologyCountMap } from './TopologyCountMap';
 import { Topology, Objects } from 'topojson-specification';
@@ -10,9 +10,9 @@ import { GeoJsonProperties, FeatureCollection, Geometry } from 'geojson';
 import { feature } from 'topojson-client';
 import { Colour } from '../../utils/Colours';
 
-let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
+let worldData = worldMapData as unknown as Topology<Objects<GeoJsonProperties>>;
 
-let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
+let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(worldData, worldData.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
 mapFeatures.features = mapFeatures.features.filter((val, idx) => val.id !== '010'); // remove antarctica
 let mapPresentationData = mapFeatures.features;
 
@@ -26,7 +26,7 @@ mapPresentationData.forEach((feature, idx) => {
 const stories = storiesOf('World Map', module);
 stories.addDecorator(withKnobs);
 
-  stories.add('default', () => <TopologyCountMap width={800} height={500} mapData={data} areaCounts={areaCounts}></TopologyCountMap>);
+  stories.add('default', () => <TopologyCountMap width={800} height={500} mapData={worldData} areaCounts={areaCounts}></TopologyCountMap>);
 
   stories.add('colours', () => {
     const label = 'Map Colours';
@@ -43,12 +43,12 @@ stories.addDecorator(withKnobs);
     const mapColourFrom = text('Map Colour From', '');
     const mapColourTo = text('Map Colour To', '');
   
-    return (<TopologyCountMap width={800} height={500} mapData={data} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></TopologyCountMap>);
+    return (<TopologyCountMap width={800} height={500} mapData={worldData} areaCounts={areaCounts} mapColour={colour} mapColourFrom={mapColourFrom} mapColourTo={mapColourTo}></TopologyCountMap>);
   });
 
   stories.add('dimensions', () => {
     const width = number('Width', 800);
     const height = number('Height', 500);
 
-    return (<TopologyCountMap width={width} height={height} mapData={data} areaCounts={areaCounts}></TopologyCountMap>);
+    return (<TopologyCountMap width={width} height={height} mapData={worldData} areaCounts={areaCounts}></TopologyCountMap>);
   });

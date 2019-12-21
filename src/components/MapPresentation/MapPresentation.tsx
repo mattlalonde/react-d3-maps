@@ -10,7 +10,7 @@ interface IMapPresentationProps {
     height: number;
     mapData?: Array<Feature<Geometry, GeoJsonProperties>>;
     areaCounts?: Map<string, number>;
-    zoomToCountryId?: string;
+    zoomToId?: string;
     colourScale: ScaleSequential<string>;
     geoPath: GeoPath;
 }
@@ -22,16 +22,16 @@ const defaultValues = {
 
 export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (props) => {
 
-    const { width, height, mapData, areaCounts, zoomToCountryId, colourScale, geoPath } = { ...defaultValues, ...props };
+    const { width, height, mapData, areaCounts, zoomToId, colourScale, geoPath } = { ...defaultValues, ...props };
 
     let translateX = 0;
     let translateY = 0;
     let scale = 1;
     let strokeWidth = 0.5;
 
-    if(zoomToCountryId) {
+    if(zoomToId) {
       // get a specific country
-      const country = mapData.filter(item => item.id === zoomToCountryId);
+      const country = mapData.filter(item => item.id === zoomToId);
 
       if(country.length > 0) {
         const bounds = geoPath.bounds(country[0]);
@@ -66,8 +66,8 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                           d={ geoPath(d) as string }
                           className="country"
                           fill={ areaCounts.has(d.id as string) ? colourScale(areaCounts.get(d.id as string) as number) : colourScale(0) }
-                          stroke={ zoomToCountryId && zoomToCountryId === d.id ? "#000000" : "#BBBBBB"}
-                          strokeWidth={ zoomToCountryId && zoomToCountryId === d.id ? strokeWidth * 2 : strokeWidth }
+                          stroke={ zoomToId && zoomToId === d.id ? "#000000" : "#BBBBBB"}
+                          strokeWidth={ zoomToId && zoomToId === d.id ? strokeWidth * 2 : strokeWidth }
                         />
                       )
                     )

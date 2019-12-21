@@ -14,6 +14,7 @@ interface ITopologyCountMapProps {
   width: number;
   height: number;
   mapData: Topology<Objects<GeoJsonProperties>>;
+  mapDataObjectProperty?: string;
   areaCounts?: Map<string, number>;
   mapColour?: Colour;
   mapColourFrom?: string;
@@ -27,6 +28,7 @@ interface ITopologyCountMapProps {
 
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
+  mapDataObjectProperty: 'countries',
   areaCounts: new Map<string, number>(),
   removeAreaIds: ['010'],
   fontFamily: 'Arial',
@@ -37,14 +39,14 @@ const defaultValues = {
 
 export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> = (props) => {
 
-  const { width, height, mapData, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
+  const { width, height, mapData, mapDataObjectProperty, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
 
   const [zoomToCountry, setZoomToCountry] = useState('');
 
   const maxCount = useMemo(() => areaCounts && areaCounts.size > 0 ? Math.max(...Array.from(areaCounts.values())) : 0, [areaCounts]);
   const presentationData = useMemo(() => {
     const data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
-    let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
+    let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects[mapDataObjectProperty]) as FeatureCollection<Geometry, GeoJsonProperties>;
     
     if(removeAreaIds && removeAreaIds.length) {
       mapFeatures.features = mapFeatures.features.filter(value => {
@@ -55,7 +57,14 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
     return mapFeatures;
   }, [mapData, removeAreaIds]);
 
-  const colourScale = useMemo(() => scaleSequential(colourInterpolateFunc(mapColour, mapColourFrom, mapColourTo)).domain([0, maxCount]), [mapColour, mapColourFrom, mapColourTo, maxCount]);
+  const colourScale = useMemo(() => {
+    // if maxCount is zero we just want to show a white colour for all areas
+    if(maxCount === 0) {
+      return scaleSequential(colourInterpolateFunc(undefined, '#ffffff', '#ffffff')).domain([0, maxCount]);
+    }
+
+    return scaleSequential(colourInterpolateFunc(mapColour, mapColourFrom, mapColourTo)).domain([0, maxCount]);
+  }, [mapColour, mapColourFrom, mapColourTo, maxCount]);
   const projection = useMemo(() => geoMercator().scale(100), []);
   const path = useMemo(() => geoPath().projection(projection.fitSize([width, height], presentationData)), [projection, width, height, presentationData]);
 
@@ -83,7 +92,7 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
 
   return (
     <animated.div style={mapAnimationProps}>
-      <MapPresentation mapData={presentationData.features} zoomToCountryId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
+      <MapPresentation mapData={presentationData.features} zoomToId={zoomToCountry} areaCounts={areaCounts} height={height} width={width} colourScale={colourScale} geoPath={path}></MapPresentation>
       <PopOutAreaList parentHeight={height} allAreaCounts={allAreaCounts} fontColour={fontColour} fontSize={listFontSize} onSelect={(countryId) => setZoomToCountry(countryId || '')}></PopOutAreaList>
       {zoomedCountry && 
         <CountryDisplay style={{fontSize: headerFontSize}}>
