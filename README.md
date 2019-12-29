@@ -18,13 +18,16 @@ Map to show counts for each region in a given topology from topojson
 
 ##### Objects
 
-`Colour`
+`Colour` 
+
 Enum of easy to use colours for the map
+
 Available values:
-..* Red
-..* Blue
-..* Green
-..* Grey
+
+- Red
+- Blue
+- Green
+- Grey
 
 
 
