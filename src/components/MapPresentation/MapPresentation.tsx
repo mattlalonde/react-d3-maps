@@ -4,12 +4,13 @@ import { ScaleSequential, GeoPath } from "d3";
 import { useSpring, animated } from 'react-spring';
 import { Legend } from '../Legend/Legend';
 import {StyledContainer, StyledPath } from './MapPresentationStyles';
+import { IAreaCountData } from '../TopologyCountMap/TopologyCountMap';
 
 interface IMapPresentationProps {
     width: number;
     height: number;
     mapData?: Array<Feature<Geometry, GeoJsonProperties>>;
-    areaCounts?: Map<string, number>;
+    areaCounts?: Map<string | number, IAreaCountData>;
     zoomToId?: string;
     colourScale: ScaleSequential<string>;
     geoPath: GeoPath;
@@ -17,8 +18,20 @@ interface IMapPresentationProps {
 
 const defaultValues = {
     mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
-    areaCounts: new Map<string, number>()
+    areaCounts: new Map<string | number, IAreaCountData>()
 };
+
+const getColour = (scale: ScaleSequential<string>, areaCounts: Map<string | number, IAreaCountData>, id: string) => {
+  if(areaCounts.has(id)) {
+    const countData = areaCounts.get(id);
+
+    if(countData) {
+      return scale(countData.count);
+    }
+  }
+
+  return scale(0);
+}
 
 export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (props) => {
 
@@ -65,7 +78,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
                           key={ `path-${ i }` }
                           d={ geoPath(d) as string }
                           className="country"
-                          fill={ areaCounts.has(d.id as string) ? colourScale(areaCounts.get(d.id as string) as number) : colourScale(0) }
+                          fill={ getColour(colourScale, areaCounts, d.id as string) }
                           stroke={ zoomToId && zoomToId === d.id ? "#000000" : "#BBBBBB"}
                           strokeWidth={ zoomToId && zoomToId === d.id ? strokeWidth * 2 : strokeWidth }
                         />

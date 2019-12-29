@@ -4,20 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortNumericDownAlt, faSortAlphaDown, faRedo, faBars } from '@fortawesome/free-solid-svg-icons';
 import {SortButton, OpenButton, ResetButton, Container, List, ListItem } from './PopOutAreaListStyles';
 
-export interface ICountData {
+export interface IAreaListCountDataItem {
     id: string;
     displayName: string;
     count: number;
+    overrideZoomToId?: string;
 }
 
 export interface IPopOutAreaListProps {
-    allAreaCounts?: Array<ICountData>;
+    allAreaCounts?: Array<IAreaListCountDataItem>;
     orderBy?: 'count' | 'name',
     fontSize?: number;
     fontColour?: string;
     fontFamily?:string;
     parentHeight: number;
-    onSelect?:(countryId?: string) => void;
+    onSelect?:(selectedListItem?: IAreaListCountDataItem) => void;
 }
 
 const defaultValues = {
@@ -26,7 +27,7 @@ const defaultValues = {
     fontSize: 12,
     fontFamily:'Arial',
     fontColour: '#444444',
-    onSelect: (countryId?: string) => {}
+    onSelect: (selectedListItem?: IAreaListCountDataItem) => {}
 };
 
 const sortButtonAnimationStyles = {
@@ -106,7 +107,7 @@ export const PopOutAreaList: React.FunctionComponent<IPopOutAreaListProps> = (pr
             <List style={{ ...{height: parentHeight - 51, fontFamily: fontFamily, colour: fontColour, fontSize: `${fontSize}px`}, ...listProps }}>
                 {
                     listItems.map((value, index) => (
-                        <ListItem key={index} style={listItemProps} onClick={() => onSelect(value.id)}>
+                        <ListItem key={index} style={listItemProps} onClick={() => onSelect(value)}>
                             <div className="name">{value.displayName}</div>
                             <div className="count">{value.count}</div>
                         </ListItem>

@@ -7,7 +7,7 @@ import { Topology, Objects } from 'topojson-specification';
 import { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { feature } from 'topojson-client';
 
-import { PopOutAreaList, ICountData } from './PopOutAreaList';
+import { PopOutAreaList, IAreaListCountDataItem } from './PopOutAreaList';
 
 let data = mapData as unknown as Topology<Objects<GeoJsonProperties>>;
 let mapFeatures: FeatureCollection<Geometry, GeoJsonProperties> = feature(data, data.objects.countries) as FeatureCollection<Geometry, GeoJsonProperties>;
@@ -18,7 +18,7 @@ let areaCounts = new Map<string, number>();
 areaCounts.set('076', 10); // brazil
 areaCounts.set('170', 110); // columbia
 
-const allAreaCounts = new Array<ICountData>();
+const allAreaCounts = new Array<IAreaListCountDataItem>();
 
 mapPresentationData.forEach(feature => {
     const featureId = feature.id as string;
