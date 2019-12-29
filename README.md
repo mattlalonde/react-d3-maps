@@ -34,11 +34,11 @@ Value object in the area count Map
 | width           | number                                 |                   |
 | height          | number                                 |                   |
 | mapData         | `Topology<Objects<GeoJsonProperties>>` | empty array       | a topojson topology
-| areaCounts?     | `Map<string | number, IAreaCountData>` | empty map         | map of id's and it's associated count
+| areaCounts?     | `Map<string or number, IAreaCountData>` | empty map         | map of id's and it's associated count
 | mapColour?      | Colour                                 |                   | overrides mapColourFrom and mapColourTo
 | mapColourFrom?  | string                                 | #ffffff           |
 | mapColourTo?    | string                                 | #9fc5e8           | Same as Colour.Blue
-| removeAreaIds?  | `Set<string | number>`                 | []                | id's of areas not to show on the map
+| removeAreaIds?  | `Set<string or number>`                 | []                | id's of areas not to show on the map
 | fontFamily?     | string                                 | Arial             |
 | fontColour?     | string                                 | #444444           | 
 | listFontSize?   | number                                 | 12                |
