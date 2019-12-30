@@ -84,7 +84,7 @@ The display name can be overridden by providing a value for overrideDisplayName 
 
 ### Missing regions in countries-110m.json
 
-A good topology file to use to display a world map is the countries-110m.json due to it's small file size (~100kb), however
+A good topology file to use to display a world map is the countries-110m.json due to it's small file size (108KB), however
 some regions are missing from the file such as Hong Kong. If you include Hong Kong in the areaCounts map it will still 
 be displayed in the pop out list however clicking on the item in the list will not zoom into the correct area as there is no defined region.
 
@@ -92,7 +92,7 @@ If you would like to zoom into a region that is available you can provide a valu
 So, for example, you can make the map zoom into China when clicking on Hong Kong as it is a special economic regiong of China. Although not ideal
 this can be a good compromise if file size is an issue, such as when targeting mobile devices.
 
-If file size is less of an issue you can use more detailed topologies such as the world-110m.json file in the data folder of this project (~500kb).
+If file size is less of an issue you can use more detailed topologies such as the world-110m.json file in the data folder of this project (574KB).
 
 Examples of both of these approaches can be found in the storybook stories.
 
