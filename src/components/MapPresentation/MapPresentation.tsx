@@ -53,7 +53,7 @@ export const MapPresentation: React.FunctionComponent<IMapPresentationProps> = (
         const x = (bounds[0][0] + bounds[1][0]) / 2;
         const y = (bounds[0][1] + bounds[1][1]) / 2;
   
-        scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
+        scale = Math.max(1, Math.min(20, 0.9 / Math.max(dx / width, dy / height)));
         translateX = width / 2 - scale * x;
         translateY = height / 2 - scale * y;
         strokeWidth = 0.5 / scale;
