@@ -89,8 +89,8 @@ some regions are missing from the file such as Hong Kong. If you include Hong Ko
 be displayed in the pop out list however clicking on the item in the list will not zoom into the correct area as there is no defined region.
 
 If you would like to zoom into a region that is available you can provide a value for overrideZoomToAreaId in the assicated IAreaCountData value.
-So, for example, you can make the map zoom into China when clicking on Hong Kong as it is a special economic regiong of China. Although not ideal
-this can be a good compromise if file size is an issue, such as when targeting mobile devices.
+So, for example, you can make the map zoom into the whole United Kingdom when clicking on either England, Wales, Scotland or Northern Ireland if they
+are defined seperately in the list.
 
 If file size is less of an issue you can use more detailed topologies such as the world-110m.json file in the data folder of this project (574KB).
 
