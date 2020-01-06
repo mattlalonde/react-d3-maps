@@ -70,11 +70,12 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
         if(value.id) {
           return !removeAreaIds.has(value.id);
         }
+        return false;
       });
     }
 
     return mapFeatures;
-  }, [mapData, removeAreaIds]);
+  }, [mapData, removeAreaIds, mapDataObjectProperty]);
 
   const colourScale = useMemo(() => {
     // if maxCount is zero we just want to show a white colour for all areas
