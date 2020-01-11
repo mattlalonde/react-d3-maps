@@ -1,6 +1,6 @@
 {
   "name": "react-d3-maps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -20,8 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "postinstall": "install-peers -f"
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,7 +63,6 @@
     "@types/styled-components": "^4.1.20",
     "@types/topojson-client": "^3.0.0",
     "babel-loader": "^8.0.6",
-    "install-peers-cli": "^2.2.0",
     "react-scripts": "^3.3.0",
     "rollup": "^1.29.0",
     "rollup-plugin-typescript2": "^0.25.3",
