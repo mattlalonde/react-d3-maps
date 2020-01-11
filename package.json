@@ -1,5 +1,5 @@
 {
-  "name": "react-maps",
+  "name": "react-d3-maps",
   "version": "0.1.0",
   "private": false,
   "main": "dist/index.cjs.js",
