@@ -69,6 +69,8 @@ export const ListItem = styled(animated.div)`
     .name {
         flex-grow: 1;
         padding: 0 5px;
+        text-align: left;
+        margin-left: 5px;
     }
 
     .count {
