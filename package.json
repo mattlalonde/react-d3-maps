@@ -1,35 +1,27 @@
 {
   "name": "react-maps",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.7",
-    "@types/d3": "^5.7.2",
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.5",
-    "@types/react": "16.9.2",
-    "@types/react-dom": "16.9.0",
-    "d3": "^5.12.0",
-    "d3-geo": "^1.11.6",
-    "d3-interpolate": "^1.3.2",
-    "polished": "^3.4.2",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-scripts": "3.1.2",
-    "react-spring": "^8.0.27",
-    "styled-components": "^4.4.1",
-    "topojson-client": "^3.0.1",
-    "typescript": "3.6.3"
+  "private": false,
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/mattlalonde/react-maps",
+    "type": "git"
   },
+  "keywords": [
+    "react",
+    "d3",
+    "map"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rollup -c",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "install-peers -f"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,16 +38,45 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "d3": "^5.12.0",
+    "d3-geo": "^1.11.6",
+    "d3-interpolate": "^1.3.2",
+    "polished": "^3.4.2",
+    "topojson-client": "^3.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.7",
     "@storybook/addon-actions": "^5.2.5",
     "@storybook/addon-knobs": "^5.2.5",
     "@storybook/addon-links": "^5.2.5",
     "@storybook/addons": "^5.2.5",
     "@storybook/react": "^5.2.5",
+    "@types/d3": "^5.7.2",
+    "@types/jest": "24.0.18",
+    "@types/node": "12.7.5",
+    "@types/react": "16.9.2",
+    "@types/react-dom": "16.9.0",
     "@types/storybook__react": "^4.0.2",
     "@types/styled-components": "^4.1.20",
     "@types/topojson-client": "^3.0.0",
-    "babel-loader": "^8.0.6"
-  }
+    "babel-loader": "^8.0.6",
+    "install-peers-cli": "^2.2.0",
+    "react-scripts": "^3.3.0",
+    "rollup": "^1.29.0",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "typescript": "3.6.3"
+  },
+  "peerDependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-spring": "^8.0.27",
+    "styled-components": "^4.4.1"
+  },
+  "files": [
+    "dist"
+  ]
 }
