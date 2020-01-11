@@ -10,13 +10,18 @@
     "url": "https://github.com/mattlalonde/react-maps",
     "type": "git"
   },
+  "keywords": [
+    "react",
+    "d3",
+    "map"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rollup -c",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "install-peers -f"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -59,6 +64,7 @@
     "@types/styled-components": "^4.1.20",
     "@types/topojson-client": "^3.0.0",
     "babel-loader": "^8.0.6",
+    "install-peers-cli": "^2.2.0",
     "react-scripts": "^3.3.0",
     "rollup": "^1.29.0",
     "rollup-plugin-typescript2": "^0.25.3",
@@ -69,5 +75,8 @@
     "react-dom": "^16.11.0",
     "react-spring": "^8.0.27",
     "styled-components": "^4.4.1"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
