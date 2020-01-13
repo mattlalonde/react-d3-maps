@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select, number, text } from '@storybook/addon-knobs';
 
 import basicWorldMapData from '../../data/countries-110m.json';
-import detailedWorldMapData from '../../data/world-110m.json';
+import detailedWorldMapData from '../../data/all-countries.json';
 
 import { TopologyCountMap, IAreaCountData } from './TopologyCountMap';
 import { Topology, Objects } from 'topojson-specification';
@@ -94,10 +94,20 @@ stories.addDecorator(withKnobs);
 
   stories.add('detailed map (can zoom on Hong Kong)', () => {
     const removeAreaIds = new Set<string | number>();
-    removeAreaIds.add(10);
+    removeAreaIds.add('010');
 
     const width = number('Width', 800);
     const height = number('Height', 500);
 
-    return (<TopologyCountMap width={width} height={height} mapData={detailedWorldData} areaCounts={detailedMapAreaCounts} removeAreaIds={removeAreaIds}></TopologyCountMap>);
+    return (<TopologyCountMap width={width} height={height} mapData={detailedWorldData} areaCounts={detailedMapAreaCounts} removeAreaIds={removeAreaIds}  featureNameProperty={'NAME'}></TopologyCountMap>);
+  });
+
+  stories.add('chinese language', () => {
+    const removeAreaIds = new Set<string | number>();
+    removeAreaIds.add('010');
+
+    const width = number('Width', 800);
+    const height = number('Height', 500);
+
+    return (<TopologyCountMap width={width} height={height} mapData={detailedWorldData} areaCounts={detailedMapAreaCounts} removeAreaIds={removeAreaIds}  featureNameProperty={'NAME_ZH'}></TopologyCountMap>);
   });
