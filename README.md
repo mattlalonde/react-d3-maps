@@ -45,20 +45,22 @@ Value object in the area count Map
 
 ##### Options
 
-| Option          | Type                                   | Default Value     | Notes     |
-|-----------------|----------------------------------------|-------------------|-----------|
-| width           | number                                 |                   |
-| height          | number                                 |                   |
-| mapData         | `Topology<Objects<GeoJsonProperties>>` | empty array       | a topojson topology
-| areaCounts?     | `Map<string \| number, IAreaCountData>`| empty map         | map of id's and it's associated count
-| mapColour?      | Colour                                 |                   | overrides mapColourFrom and mapColourTo
-| mapColourFrom?  | string                                 | #ffffff           |
-| mapColourTo?    | string                                 | #9fc5e8           | Same as Colour.Blue
-| removeAreaIds?  | `Set<string \| number>`                | []                | id's of areas not to show on the map
-| fontFamily?     | string                                 | Arial             |
-| fontColour?     | string                                 | #444444           | 
-| listFontSize?   | number                                 | 12                |
-| headerFontSize? | number                                 | 16                |
+| Option                 | Type                                   | Default Value     | Notes     |
+|------------------------|----------------------------------------|-------------------|-----------|
+| width                  | number                                 |                   |
+| height                 | number                                 |                   |
+| mapData                | `Topology<Objects<GeoJsonProperties>>` | empty array       | a topojson topology
+| mapDataObjectProperty? | string                                 | 'countries'       | name of property containing GeometryCollection
+| featureNameProperty?   | string                                 | 'name'            | name of property to identify feature name
+| areaCounts?            | `Map<string \| number, IAreaCountData>`| empty map         | map of id's and it's associated count
+| mapColour?             | Colour                                 |                   | overrides mapColourFrom and mapColourTo
+| mapColourFrom?         | string                                 | #ffffff           |
+| mapColourTo?           | string                                 | #9fc5e8           | Same as Colour.Blue
+| removeAreaIds?         | `Set<string \| number>`                | []                | id's of areas not to show on the map
+| fontFamily?            | string                                 | Arial             |
+| fontColour?            | string                                 | #444444           | 
+| listFontSize?          | number                                 | 12                |
+| headerFontSize?        | number                                 | 16                |
 
 
 ## Available scripts
@@ -92,9 +94,37 @@ If you would like to zoom into a region that is available you can provide a valu
 So, for example, you can make the map zoom into the whole United Kingdom when clicking on either England, Wales, Scotland or Northern Ireland if they
 are defined seperately in the list.
 
-If file size is less of an issue you can use more detailed topologies such as the world-110m.json file in the data folder of this project (574KB).
 
-Examples of both of these approaches can be found in the storybook stories.
+
+### Creating your own Topologies
+
+The all-countries.json topojson file in the data folder aims to include some of the missing regions from the countries-110m.json file such as hong kong. It also includes chinese translations for the country names. It was created using the foloowing steps which you can use to create custom topologies.
+
+
+First download the natural earth data from https://www.naturalearthdata.com/downloads/10m-cultural-vectors/ . For all coutries download the Admin 0 - Countries file.
+
+
+Go to https://mapshaper.org/ and upload the previously downloaded natural earth file. You can then open the console and manipulate the file using any mapshaper commands from https://github.com/mbloch/mapshaper/wiki/Command-Reference.
+
+The foloowing commands were used to create the all-coutries file:
+
+
+remove any tiny islands
+`mapshaper --filter-islands min-area=100km2`
+
+
+remove any remaining regions with no vectors
+`mapshaper --clean`
+
+
+remove unwanted fields from the data
+`mapshaper --filter-fields fields=NAME,NAME_ZH,ISO_N3`
+
+
+Then click simplify and ensure 'prevent shape removal' is selected. Move the slider to simplify the data (2% was used for the all-countries file). Then click 'Repair' to fix any line intersections.
+
+
+You can now export a file and include any output options you want from the mapshaper commands, such as creating an id field.
 
 
 
