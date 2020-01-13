@@ -21,6 +21,7 @@ export interface ITopologyCountMapProps {
   height: number;
   mapData: Topology<Objects<GeoJsonProperties>>;
   mapDataObjectProperty?: string;
+  featureNameProperty?: string;
   areaCounts?: Map<string | number, IAreaCountData>;
   mapColour?: Colour;
   mapColourFrom?: string;
@@ -35,6 +36,7 @@ export interface ITopologyCountMapProps {
 const defaultValues = {
   mapData: new Array<Feature<Geometry, GeoJsonProperties>>(),
   mapDataObjectProperty: 'countries',
+  featureNameProperty: 'name',
   areaCounts: new Map<string | number, IAreaCountData>(),
   removeAreaIds: new Set<string | number>(),
   fontFamily: 'Arial',
@@ -45,7 +47,7 @@ const defaultValues = {
 
 export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> = (props) => {
 
-  const { width, height, mapData, mapDataObjectProperty, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
+  const { width, height, mapData, mapDataObjectProperty, featureNameProperty, areaCounts, removeAreaIds, mapColour, mapColourFrom, mapColourTo, fontFamily, fontColour, listFontSize, headerFontSize } = { ...defaultValues, ...props };
 
   const [selectedListItem, setSelectedListItem] = useState<IAreaListCountDataItem>();
 
@@ -94,7 +96,7 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
       const featureId = feature.id as string;
       ids.add(featureId);
       const item = areaCounts.get(featureId);
-      let displayName = feature && feature.properties ? feature.properties.name : '';
+      let displayName = feature && feature.properties ? feature.properties[featureNameProperty] : '';
       let count = 0;
       let overrideZoomToId;
 
@@ -135,7 +137,7 @@ export const TopologyCountMap: React.FunctionComponent<ITopologyCountMapProps> =
     }
 
     return counts;
-  }, [presentationData, areaCounts]);
+  }, [presentationData, areaCounts, featureNameProperty]);
 
   const zoomedArea: IAreaListCountDataItem | null  = useMemo(() => {
     if(selectedListItem) {
