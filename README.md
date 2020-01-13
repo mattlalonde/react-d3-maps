@@ -3,6 +3,13 @@
 Repository to build maps using React and D3. 
 
 
+You can install the package by running
+
+
+`npm i react-d3-maps`
+
+
+
 ## Available maps
 
 ### `Topology Count Map`
