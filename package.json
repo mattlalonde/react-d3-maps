@@ -54,7 +54,7 @@
     "@storybook/addon-knobs": "^5.2.5",
     "@storybook/addon-links": "^5.2.5",
     "@storybook/addons": "^5.2.5",
-    "@storybook/react": "^5.2.5",
+    "@storybook/react": "^6.5.13",
     "@types/d3": "^5.7.2",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.5",
@@ -65,7 +65,7 @@
     "@types/topojson-client": "^3.0.0",
     "babel-loader": "^8.0.6",
     "install-peers-cli": "^2.2.0",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "^5.0.1",
     "rollup": "^1.29.0",
     "rollup-plugin-typescript2": "^0.25.3",
     "typescript": "3.6.3"
